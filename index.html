@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Porcelain Panic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">◈</div><div><h1>PORCELAIN <span>PANIC</span></h1><p>SEWER DISTRICT // DEFENSE GRID</p></div></div>
+      <div class="top-stats"><div class="stat"><b class="coin-dot">✦</b><strong id="coins">420</strong><small>GEMS</small></div><div class="stat"><b>◉</b><strong id="lives">3</strong><small>CORE HP</small></div><div class="stat"><b>☷</b><strong id="wave">1/10</strong><small>WAVE</small></div></div>
+    </header>
+    <section class="game-layout">
+      <div class="board-card">
+        <div class="board-head"><div><span class="eyebrow">SECTOR 07 — NIGHT SHIFT</span><h2>Flushline Junction</h2></div><div class="threat"><i></i> THREAT LEVEL <strong id="threat">LOW</strong></div></div>
+        <div class="canvas-wrap"><canvas id="game" width="960" height="590"></canvas><div class="toast" id="toast">Select a unit to deploy</div><div class="start-overlay" id="startOverlay"><div class="signal">◈</div><h3>DEFEND THE FLUSHLINE</h3><p>Deploy a porcelain guardian, then start the first wave.</p><button id="startBtn" class="primary">START WAVE <span>→</span></button></div></div>
+        <div class="board-footer"><div class="legend"><span><i class="path-key"></i> INVASION ROUTE</span><span><i class="range-key"></i> UNIT RANGE</span></div><div class="speed"><span>SIM SPEED</span><button data-speed="1" class="active">1×</button><button data-speed="2">2×</button><button data-speed="3">3×</button></div></div>
+      </div>
+      <aside class="sidebar">
+        <div class="panel roster"><div class="panel-title"><h3>UNIT ROSTER</h3><span>4 AVAILABLE</span></div><div id="unitList"></div></div>
+        <div class="panel selected"><div class="panel-title"><h3 id="selectedTitle">SELECT A UNIT</h3><span id="selectedCost">DEPLOY</span></div><div id="selectedBody" class="empty-state"><div class="empty-icon">⌖</div><p>Choose a guardian from the roster<br>to deploy it on the grid.</p></div></div>
+        <div class="panel log"><div class="panel-title"><h3>COMMS LOG</h3><span>LIVE</span></div><div id="log"></div></div>
+      </aside>
+    </section>
+    <footer><span>PORCELAIN PANIC v1.0</span><span>ORIGINAL ARCADE DEFENSE // ALL SYSTEMS NOMINAL</span><span>⚙ SETTINGS</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
