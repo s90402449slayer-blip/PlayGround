@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0f1f" />
+<title>Toilet Tower Defense — 3D Roblox-Style Tower Defense</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1226'/%3E%3Cpath d='M18 12h28v14c0 3-2 5-5 5H23c-3 0-5-2-5-5V12z' fill='%23e9f6ff'/%3E%3Cpath d='M14 33h36c2 0 3 2 2 4l-5 12c-2 4-5 6-10 6H27c-5 0-8-2-10-6l-5-12c-1-2 0-4 2-4z' fill='%23f7fbff'/%3E%3Ccircle cx='27' cy='26' r='3' fill='%2316233f'/%3E%3Ccircle cx='37' cy='26' r='3' fill='%2316233f'/%3E%3Cpath d='M27 31q5 4 10 0' stroke='%2316233f' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="game-shell">
+  <div id="scene" aria-hidden="true"></div>
+  <div id="vignette"></div>
+  <div id="flash"></div>
+
+  <div id="hud">
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><path d="M17 9h30v15c0 4-2 6-6 6H23c-4 0-6-2-6-6V9z" fill="#e9f6ff"/><path d="M12 32h40c2 0 3.5 2 2.6 4.2l-6 15C46.5 56 42.6 59 36.5 59h-9C21.4 59 17.5 56 15.4 51.2l-6-15C8.5 34 10 32 12 32z" fill="#f7fbff"/><ellipse cx="32" cy="36" rx="17" ry="5" fill="#c6e2f5"/><circle cx="25" cy="24" r="3.2" fill="#12213d"/><circle cx="39" cy="24" r="3.2" fill="#12213d"/><path d="M26 30q6 5 12 0" stroke="#12213d" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M12 32h40" stroke="#9ed2ef" stroke-width="2"/></svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-top">TOILET</span>
+          <span class="brand-bottom">TOWER DEFENSE</span>
+        </span>
+        <span class="brand-badge">3D</span>
+      </div>
+
+      <div class="top-stats">
+        <div class="stat chip-coins" title="Coins">
+          <span class="stat-icon coin-icon">$</span>
+          <span class="stat-value" id="coinCount">0</span>
+        </div>
+        <div class="stat chip-gems" title="Gems">
+          <span class="stat-icon gem-icon"></span>
+          <span class="stat-value" id="gemCount">25</span>
+        </div>
+        <div class="stat chip-wave" title="Wave">
+          <span class="wave-icon">☠</span>
+          <span class="stat-value">WAVE <b id="waveNum">1</b><i>/20</i></span>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <div class="base-health" title="Base health">
+          <div class="bh-label"><span class="heart">♥</span> BASE</div>
+          <div class="bh-track"><div class="bh-fill" id="healthFill"></div><span class="bh-text" id="healthText">100</span></div>
+        </div>
+        <button class="icon-btn" id="speedBtn" title="Game speed">1×</button>
+        <button class="icon-btn" id="soundBtn" title="Sound on/off" aria-label="Toggle sound">🔊</button>
+        <button class="icon-btn" id="helpBtn" title="How to play">?</button>
+      </div>
+    </header>
+
+    <div id="bossBar" class="hidden">
+      <div class="boss-name">👑 THE GOLDEN THRONE <span id="bossHpText"></span></div>
+      <div class="boss-track"><div id="bossFill"></div></div>
+    </div>
+
+    <div id="waveBanner" class="hidden">
+      <div class="wb-small" id="waveBannerSmall">GET READY</div>
+      <div class="wb-big" id="waveBannerBig">WAVE 1</div>
+      <div class="wb-sub" id="waveBannerSub">THE TOILETS ARE COMING</div>
+    </div>
+
+    <div id="toastStack"></div>
+    <div id="damageLayer"></div>
+
+    <aside id="panel" class="hidden" aria-live="polite">
+      <div class="panel-head">
+        <div class="panel-icon" id="panelIcon"></div>
+        <div class="panel-heading">
+          <div class="panel-kicker" id="panelKicker">DEFENSE UNIT</div>
+          <div class="panel-title" id="panelTitle">Cameraman</div>
+          <div class="panel-rarity" id="panelRarity">COMMON</div>
+        </div>
+        <button class="panel-close" id="panelClose" aria-label="Close panel">✕</button>
+      </div>
+      <div class="panel-body" id="panelBody"></div>
+      <div class="panel-actions" id="panelActions"></div>
+    </aside>
+
+    <div id="hint" class="hint">
+      <span class="hint-dot"></span>
+      <span id="hintText">Tap a glowing pad to build &nbsp;•&nbsp; Drag to orbit &nbsp;•&nbsp; Scroll to zoom</span>
+      <button id="hintClose" aria-label="Dismiss hint">✕</button>
+    </div>
+
+    <div id="bottom">
+      <div id="shopWrap">
+        <div class="shop-label"><span>DEPLOY UNITS</span><span class="shop-sub">1–5 to select</span></div>
+        <div id="shop"></div>
+      </div>
+      <div id="waveControl">
+        <div class="wave-meta">
+          <span id="waveStateLabel">WAVE 1 INCOMING</span>
+          <span id="waveTimer">AUTO 0:06</span>
+        </div>
+        <button id="startWaveBtn">
+          <span class="btn-shine"></span>
+          <span class="start-label" id="startWaveLabel">START WAVE</span>
+          <span class="start-sub" id="startWaveSub">+$120 BONUS</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="overlay" class="hidden">
+      <div class="overlay-card">
+        <div class="overlay-kicker" id="overlayKicker">VICTORY</div>
+        <h1 id="overlayTitle">TOILETS DEFEATED</h1>
+        <p id="overlayText">The base is safe. For now.</p>
+        <div class="overlay-stats" id="overlayStats"></div>
+        <button id="restartBtn">PLAY AGAIN</button>
+        <div class="overlay-foot">A 3D browser tribute to Toilet Tower Defense</div>
+      </div>
+    </div>
+
+    <div id="helpModal" class="hidden">
+      <div class="help-card">
+        <div class="help-head"><h2>HOW TO PLAY</h2><button id="helpClose" aria-label="Close help">✕</button></div>
+        <div class="help-grid">
+          <div><b>1. Build</b><span>Tap any glowing pad on the island, then pick a unit. Or press 1–5 and tap a pad.</span></div>
+          <div><b>2. Defend</b><span>Camera, Speaker, TV, and Titan units automatically attack toilets marching along the road.</span></div>
+          <div><b>3. Upgrade</b><span>Tap a deployed unit to upgrade it up to Level 3 or sell it for 70% back.</span></div>
+          <div><b>4. Survive</b><span>Stop every toilet before it reaches the Camera HQ. Every leak damages your base.</span></div>
+        </div>
+        <div class="help-tip">TIP: Boss toilets appear every 5 waves. Save coins for Titan units and upgrades.</div>
+        <button id="helpPlay">LET'S GO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
